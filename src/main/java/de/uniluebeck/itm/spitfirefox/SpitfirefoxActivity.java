@@ -57,8 +57,6 @@ public class SpitfirefoxActivity extends Activity{
         msgTypeGroup = (RadioGroup) findViewById(R.id.rdbg_reliability);
 
 
-        uriTextBox.setText("141.83.68.39:5683/.well-known/core");
-
         //Set GET as default method
         RadioButton getButton = (RadioButton) findViewById(R.id.rdb_get);
         getButton.setChecked(true);
