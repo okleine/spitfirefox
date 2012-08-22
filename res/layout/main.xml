@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="#FFFFFF"
+              android:orientation="vertical">
+
+    <!--URI and send-->
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:weightSum="1">
+
+        <EditText android:id="@+id/txt_uri"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingLeft="5dp"
+                  android:textSize="12dp"
+                  android:layout_weight="0.9"
+                  android:singleLine="true"
+                  android:hint="Enter URI here (you may omit coap:// as prefix)"
+        />
+
+        <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_vertical"
+                  android:layout_weight="0.1">
+
+            <Button android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:id="@+id/btn_send"
+                    android:text="@string/btn_send_label"
+            />
+
+            <ProgressBar android:id="@+id/progressbar"
+                         android:layout_width="fill_parent"
+                         android:layout_height="fill_parent"
+                         android:layout_gravity="center"
+                         android:visibility="gone"
+
+            />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TableLayout android:layout_width="fill_parent"
+                 android:layout_height="wrap_content">
+
+        <TableRow>
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_vertical"
+                      android:paddingLeft="5dp"
+                      android:paddingRight="10dp"
+                      android:textColor="#000000"
+                      android:textSize="14dp"
+                      android:text="Method:"
+            />
+
+            <RadioGroup android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rdbg_method"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                <RadioButton android:id="@+id/rdb_get"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="0.25"
+                             android:textColor="#000000"
+                             android:text="GET"
+                             android:textSize="12dp"
+                        />
+                <RadioButton android:id="@+id/rdb_put"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="0.25"
+                             android:textColor="#000000"
+                             android:text="PUT"
+                             android:textSize="12dp"
+                        />
+                <RadioButton android:id="@+id/rdb_post"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="0.25"
+                             android:textColor="#000000"
+                             android:text="POST"
+                             android:textSize="12dp"
+                        />
+                <RadioButton android:id="@+id/rdb_delete"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="0.25"
+                             android:textColor="#000000"
+                             android:text="DELETE"
+                             android:textSize="12dp"
+                        />
+            </RadioGroup>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_vertical"
+                      android:paddingLeft="5dp"
+                      android:paddingRight="10dp"
+                      android:textColor="#000000"
+                      android:textSize="13dp"
+                      android:text="Reliability:"/>
+
+            <RadioGroup android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rdbg_reliability"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                <RadioButton android:id="@+id/rdb_con"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="0.5"
+                             android:textColor="#000000"
+                             android:text="CON"
+                             android:textSize="12dp"
+                        />
+                <RadioButton android:id="@+id/rdb_non"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="0.5"
+                             android:textColor="#000000"
+                             android:text="NON"
+                             android:textSize="12dp"
+                        />
+
+            </RadioGroup>
+
+
+        </TableRow>
+
+    </TableLayout>
+
+
+    <EditText android:id="@+id/payload"
+              android:layout_height="fill_parent"
+              android:layout_width="fill_parent"
+              android:hint="Enter payload for PUT or POST here"
+    />
+</LinearLayout>
