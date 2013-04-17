@@ -19,27 +19,36 @@
                   android:layout_weight="0.9"
                   android:singleLine="true"
                   android:hint="Enter URI here (you may omit coap:// as prefix)"
-        />
+                />
 
         <LinearLayout android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_gravity="center_vertical"
-                  android:layout_weight="0.1">
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_vertical"
+                      android:layout_weight="0.1">
 
             <Button android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_gravity="center"
                     android:id="@+id/btn_send"
                     android:text="@string/btn_send_label"
-            />
+                    />
 
-            <ProgressBar android:id="@+id/progressbar"
-                         android:layout_width="fill_parent"
-                         android:layout_height="fill_parent"
-                         android:layout_gravity="center"
-                         android:visibility="gone"
+            <LinearLayout android:id="@+id/progress"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:visibility="gone">
 
-            />
+                <ProgressBar android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center"
+                        />
+
+                <Button android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btn_cancel"
+                        android:text="cancel"
+                        />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -145,6 +154,7 @@
     <EditText android:id="@+id/payload"
               android:layout_height="fill_parent"
               android:layout_width="fill_parent"
+              android:layout_gravity=""
               android:hint="Enter payload for PUT or POST here"
     />
 </LinearLayout>

@@ -10,6 +10,7 @@
     <string name="button_delete">DELETE</string>
     <string name="payload_label">Payload:</string>
     <string name="btn_send_label">Send</string>
+    <string name="btn_cancel_label">Cancel</string>
 
 
     <!--Options Activity-->

@@ -26,8 +26,10 @@ public class SpitfirefoxActivity extends Activity{
     private static String TAG = "nCoap.application.android.spitfirefox";
 
     Handler handler = new Handler();
+
     private Button sendButton;
-    private ProgressBar progressBar;
+    private LinearLayout waitForResponse;
+    private Button cancelButton;
     private EditText uriTextBox;
     private EditText payloadTextBox;
     private RadioGroup methodGroup;
@@ -50,12 +52,12 @@ public class SpitfirefoxActivity extends Activity{
 
          //initialize view objects
         sendButton = (Button) findViewById(R.id.btn_send);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        cancelButton = (Button) findViewById(R.id.btn_cancel);
+        waitForResponse = (LinearLayout) findViewById(R.id.progress);
         uriTextBox = (EditText) findViewById(R.id.txt_uri);
         payloadTextBox = (EditText) findViewById(R.id.payload);
         methodGroup = (RadioGroup) findViewById(R.id.rdbg_method);
         msgTypeGroup = (RadioGroup) findViewById(R.id.rdbg_reliability);
-
 
         //Set GET as default method
         RadioButton getButton = (RadioButton) findViewById(R.id.rdb_get);
@@ -64,6 +66,8 @@ public class SpitfirefoxActivity extends Activity{
         //Set CON as default reliability level
         RadioButton conButton = (RadioButton) findViewById(R.id.rdb_con);
         conButton.setChecked(true);
+
+        uriTextBox.setText("141.83.157.152:5683/simple");
 
         //Change available options when method changes
 
@@ -93,12 +97,25 @@ public class SpitfirefoxActivity extends Activity{
             }
         });
 
-
-
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new CommunicationTask().execute();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        waitForResponse.setVisibility(View.GONE);
+                        sendButton.setVisibility(View.VISIBLE);
+                        payloadTextBox.setText("Request canceled.");
+                    }
+                });
             }
         });
 
@@ -109,7 +126,7 @@ public class SpitfirefoxActivity extends Activity{
         @Override
         protected void onPreExecute(){
             sendButton.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
+            waitForResponse.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -118,13 +135,34 @@ public class SpitfirefoxActivity extends Activity{
                 CoapClientApplication clientApplication = new CoapClientApplication(){
 
                     @Override
-                    public void receiveCoapResponse(final CoapResponse coapResponse) {
+                    public void receiveResponse(final CoapResponse coapResponse) {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                progressBar.setVisibility(View.GONE);
+                                waitForResponse.setVisibility(View.GONE);
                                 sendButton.setVisibility(View.VISIBLE);
                                 payloadTextBox.setText(coapResponse.getPayload().toString(Charset.forName("UTF-8")));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void receiveEmptyACK(){
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                payloadTextBox.setText("Empty ACK received. Now waiting for the response.");
+                            }
+                        });
+                    }
+
+
+                    @Override
+                    public void handleRetransmissionTimout() {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                payloadTextBox.setText("Retransmission timed out.");
                             }
                         });
                     }
