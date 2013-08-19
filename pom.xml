@@ -9,21 +9,19 @@
     <name>spitfirefox</name>
 
     <properties>
-        <platform.version>2.3.3</platform.version>
+        <platform.version>4.2.2</platform.version>
     </properties>
 
     <distributionManagement>
         <repository>
             <id>itm-maven-repository-releases</id>
             <name>ITM UzL Maven releases repository</name>
-
-            <url>http://maven.itm.uni-luebeck.de/content/repositories/releases/</url>
+            <url>https://maven.itm.uni-luebeck.de/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>itm-maven-repository-snapshots</id>
             <name>ITM UzL Maven snapshots repository</name>
-
-            <url>http://maven.itm.uni-luebeck.de/content/repositories/snapshots/</url>
+            <url>https://maven.itm.uni-luebeck.de/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -36,9 +34,16 @@
         </dependency>
 
         <dependency>
-            <groupId>de.uniluebeck.itm.spitfire</groupId>
-            <artifactId>nCoap</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>de.uniluebeck.itm</groupId>
+            <artifactId>ncoap</artifactId>
+            <version>1.0.2-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.6</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -52,7 +57,7 @@
     <repositories>
         <repository>
             <id>itm-maven-repository-releases</id>
-            <url>http://maven.itm.uni-luebeck.de/content/repositories/releases/</url>
+            <url>https://maven.itm.uni-luebeck.de/content/repositories/releases/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -62,7 +67,7 @@
         </repository>
         <repository>
             <id>itm-maven-repository-snapshots</id>
-            <url>http://maven.itm.uni-luebeck.de/content/repositories/snapshots/</url>
+            <url>https://maven.itm.uni-luebeck.de/content/repositories/snapshots/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
@@ -77,14 +82,14 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.6.0</version>
                 <configuration>
                     <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
                     <assetsDirectory>${project.basedir}/assets</assetsDirectory>
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
                     <nativeLibrariesDirectory>${project.basedir}/src/main/native</nativeLibrariesDirectory>
                     <sdk>
-                        <platform>8</platform>
+                        <platform>17</platform>
                     </sdk>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                 </configuration>

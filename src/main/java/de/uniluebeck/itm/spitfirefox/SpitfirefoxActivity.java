@@ -3,29 +3,31 @@ package de.uniluebeck.itm.spitfirefox;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-//import android.util.Log;
 import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.*;
-import de.uniluebeck.itm.spitfire.nCoap.application.CoapClientApplication;
-import de.uniluebeck.itm.spitfire.nCoap.message.CoapRequest;
-import de.uniluebeck.itm.spitfire.nCoap.message.CoapResponse;
-import de.uniluebeck.itm.spitfire.nCoap.message.header.Code;
-import de.uniluebeck.itm.spitfire.nCoap.message.header.MsgType;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.channel.ExceptionEvent;
+import de.uniluebeck.itm.ncoap.application.client.CoapClientApplication;
+import de.uniluebeck.itm.ncoap.application.client.CoapResponseProcessor;
+import de.uniluebeck.itm.ncoap.communication.reliability.outgoing.InternalRetransmissionTimeoutMessage;
+import de.uniluebeck.itm.ncoap.communication.reliability.outgoing.RetransmissionProcessor;
+import de.uniluebeck.itm.ncoap.communication.reliability.outgoing.RetransmissionTimeoutProcessor;
+import de.uniluebeck.itm.ncoap.message.CoapRequest;
+import de.uniluebeck.itm.ncoap.message.CoapResponse;
+import de.uniluebeck.itm.ncoap.message.header.Code;
+import de.uniluebeck.itm.ncoap.message.header.MsgType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.nio.charset.Charset;
 
-public class SpitfirefoxActivity extends Activity{
+
+public class SpitfirefoxActivity extends Activity implements CoapResponseProcessor, RetransmissionProcessor,
+        RetransmissionTimeoutProcessor {
 
     private static String TAG = "nCoap.application.android.spitfirefox";
 
-    Handler handler = new Handler();
+    private Handler handler = new Handler();
 
     private Button sendButton;
     private LinearLayout waitForResponse;
@@ -35,21 +37,27 @@ public class SpitfirefoxActivity extends Activity{
     private RadioGroup methodGroup;
     private RadioGroup msgTypeGroup;
 
+    private CoapClientApplication clientApplication;
+    private int retransmissionCounter;
+
     private Logger log = LoggerFactory.getLogger(SpitfirefoxActivity.class.getName());
     /**
      * Called when the activity is first created.
-     * @param savedInstanceState If the activity is being re-initialized after 
-     * previously being shut down then this Bundle contains the data it most 
+     * @param savedInstanceState If the activity is being re-initialized after
+     * previously being shut down then this Bundle contains the data it most
      * recently supplied in onSaveInstanceState(Bundle). <b>Note: Otherwise it is null.</b>
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        clientApplication = new CoapClientApplication();
+
         //Log.i(TAG, "onCreate");
         setContentView(R.layout.main);
 
-        log.debug("CREATED!");
-
+        log.info("CREATED!");
+        log.info("Available processors: {}", Runtime.getRuntime().availableProcessors());
          //initialize view objects
         sendButton = (Button) findViewById(R.id.btn_send);
         cancelButton = (Button) findViewById(R.id.btn_cancel);
@@ -67,7 +75,7 @@ public class SpitfirefoxActivity extends Activity{
         RadioButton conButton = (RadioButton) findViewById(R.id.rdb_con);
         conButton.setChecked(true);
 
-        uriTextBox.setText("141.83.157.152:5683/simple");
+        uriTextBox.setText("141.83.68.39:5683/.well-known/core");
 
         //Change available options when method changes
 
@@ -100,6 +108,7 @@ public class SpitfirefoxActivity extends Activity{
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                retransmissionCounter = 0;
                 new CommunicationTask().execute();
             }
         });
@@ -111,6 +120,7 @@ public class SpitfirefoxActivity extends Activity{
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        retransmissionCounter = 0;
                         waitForResponse.setVisibility(View.GONE);
                         sendButton.setVisibility(View.VISIBLE);
                         payloadTextBox.setText("Request canceled.");
@@ -120,6 +130,46 @@ public class SpitfirefoxActivity extends Activity{
         });
 
     }
+
+    @Override
+    public void processCoapResponse(final CoapResponse coapResponse) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                retransmissionCounter = 0;
+                waitForResponse.setVisibility(View.GONE);
+                sendButton.setVisibility(View.VISIBLE);
+                payloadTextBox.setText(new String(coapResponse.getPayload().array(),
+                        Charset.forName("UTF-8")));
+            }
+        });
+    }
+
+    @Override
+    public void requestSent() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                retransmissionCounter++;
+                payloadTextBox.setText("Request sent #" + retransmissionCounter);
+            }
+        });
+    }
+
+    @Override
+    public void processRetransmissionTimeout(InternalRetransmissionTimeoutMessage timeoutMessage) {
+        handler.post(new Runnable(){
+            @Override
+            public void run() {
+                waitForResponse.setVisibility(View.GONE);
+                sendButton.setVisibility(View.VISIBLE);
+                retransmissionCounter = 0;
+                payloadTextBox.setText("Retransmission Timeout...");
+            }
+        });
+    }
+
+
 
     private class CommunicationTask extends AsyncTask<Object, Integer, Object>{
 
@@ -132,42 +182,6 @@ public class SpitfirefoxActivity extends Activity{
         @Override
         protected Object doInBackground(Object... params) {
             try {
-                CoapClientApplication clientApplication = new CoapClientApplication(){
-
-                    @Override
-                    public void receiveResponse(final CoapResponse coapResponse) {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                waitForResponse.setVisibility(View.GONE);
-                                sendButton.setVisibility(View.VISIBLE);
-                                payloadTextBox.setText(coapResponse.getPayload().toString(Charset.forName("UTF-8")));
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void receiveEmptyACK(){
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                payloadTextBox.setText("Empty ACK received. Now waiting for the response.");
-                            }
-                        });
-                    }
-
-
-                    @Override
-                    public void handleRetransmissionTimout() {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                payloadTextBox.setText("Retransmission timed out.");
-                            }
-                        });
-                    }
-                };
-
                 //Create request
                 MsgType msgType = msgTypeGroup.getCheckedRadioButtonId() == R.id.rdb_con ? MsgType.CON : MsgType.NON;
 
@@ -199,17 +213,19 @@ public class SpitfirefoxActivity extends Activity{
                         uriTextBox.setText(finalTargetURI);                                            }
                 });
 
-                CoapRequest coapRequest = new CoapRequest(msgType, code, new URI(targetURI), clientApplication);
+                CoapRequest coapRequest = new CoapRequest(msgType, code, new URI(targetURI));
 
+                log.info("Write Request: " + coapRequest);
 
-                //Send request
-                clientApplication.writeCoapRequest(coapRequest);
+                clientApplication.writeCoapRequest(coapRequest, SpitfirefoxActivity.this);
+
 
             } catch (final Exception e){
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         payloadTextBox.setText("Exception in communication:\n" + e.getMessage());
+                        log.error("Exception at some point!", e);
                     }
                 });
             }
