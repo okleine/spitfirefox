@@ -1,4 +1,3 @@
-Spitfirefox
-===========
+## nCoAP Client for Android
 
-CoAP Client for Android based on nCoAP
+A CoAP Client for Android based on nCoAP as Android Studio Project. It is tested to run on a Samsung Galaxy Nexus (API 18).
