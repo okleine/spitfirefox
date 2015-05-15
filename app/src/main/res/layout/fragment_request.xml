@@ -184,6 +184,7 @@
                         android:padding="5dp"
                         android:layout_marginBottom="5dp"
                         android:background="@drawable/rounded_rectangle"
+                        android:enabled="false"
                         android:hint="@string/undefined"
                         />
                 </TableRow>
@@ -203,6 +204,7 @@
                         android:padding="5dp"
                         android:layout_marginBottom="5dp"
                         android:background="@drawable/rounded_rectangle"
+                        android:enabled="false"
                         android:hint="@string/undefined"
                         />
                 </TableRow>

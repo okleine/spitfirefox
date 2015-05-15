@@ -20,6 +20,7 @@ import de.uniluebeck.itm.ncoap.message.CoapRequest;
 import de.uniluebeck.itm.ncoap.message.CoapResponse;
 import de.uniluebeck.itm.ncoap.message.MessageCode;
 import de.uniluebeck.itm.ncoap.message.MessageType;
+import de.uniluebeck.itm.ncoap.message.options.OpaqueOptionValue;
 import de.uzl.itm.client.R;
 import de.uzl.itm.ncoap.android.client.MainActivity;
 
@@ -48,7 +49,7 @@ public class SendRequestTask extends AsyncTask<Void, Void, SendRequestTask.Andro
 
     @Override
     protected void onPostExecute(AndroidClientCallback clientCallback){
-        mainActivity.getResponseFragment().setClientCallback(clientCallback);
+        mainActivity.getResponseFragment().setClientCallback(mainActivity, clientCallback);
     }
 
     @Override
@@ -148,8 +149,6 @@ public class SendRequestTask extends AsyncTask<Void, Void, SendRequestTask.Andro
             }
 
             AndroidClientCallback clientCallback = new AndroidClientCallback(serviceURI, coapRequest.isObservationRequest());
-
-            //set new callback for response fragment
 
             this.clientApplication.sendCoapRequest(coapRequest, clientCallback, remoteEndpoint);
 

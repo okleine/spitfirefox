@@ -42,6 +42,10 @@ public class MainActivity extends FragmentActivity implements RequestFragment.Se
         return this.responseFragment;
     }
 
+    public void setResponseFragment(ResponseFragment responseFragment){
+        this.responseFragment = responseFragment;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,34 +129,29 @@ public class MainActivity extends FragmentActivity implements RequestFragment.Se
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                long blockNo = coapResponse.getBlock2Number();
-                String text = "Response received";
-                if (blockNo != UintOptionValue.UNDEFINED) {
-                    text += " (" + blockNo + " blocks in " + duration + " ms)";
-                } else {
-                    text += " (after " + duration + " ms)";
-                }
-
-                Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG).show();
+//                long blockNo = coapResponse.getBlock2Number();
+//                String text = "Response received";
+//                if (blockNo != UintOptionValue.UNDEFINED) {
+//                    text += " (" + blockNo + " blocks in " + duration + " ms)";
+//                } else {
+//                    text += " (after " + duration + " ms)";
+//                }
+//
+//                Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG).show();
 
                 viewPager.setCurrentItem(1);
                 MainActivity.this.responseFragment.responseReceived(serviceURI, coapResponse);
-
             }
         });
     }
 
     /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
+     * A simple pager adapter
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-
-
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
-
         }
 
         @Override
@@ -161,7 +160,7 @@ public class MainActivity extends FragmentActivity implements RequestFragment.Se
                 return requestFragment;
             }
             else{
-                return responseFragment;
+                return new ResponseFragment();
             }
         }
 
