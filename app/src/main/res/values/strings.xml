@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">nCoAP Client</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!--For the Request Fragment-->
+    <string name="server_hint">Hostname or IP</string>
+    <string name="server_default">vs0.inf.ethz.ch</string>
+
+    <string name="con_label">CON</string>
+    <string name="non_label">NON</string>
+    <string name="obs_label">Observe</string>
+
+
+    <string name="service_label">Service</string>
+    <string name="service_hint">Services not yet discovered…</string>
+    <string name="service_hint2">"\"/\" for URI auto-completion…"</string>
+    <string name="port_hint">5683</string>
+
+    <string name="send">Send</string>
+
+    <string-array name="coap_methods">
+        <item>Discover</item>
+        <item>GET</item>
+        <item>POST</item>
+        <item>PUT</item>
+        <item>DELETE</item>
+        <item>Ping</item>
+    </string-array>
+
+    <!-- For Options -->
+    <string name="undefined">undefined</string>
+    <string name="ifmatch_no">(01)</string>
+    <string name="ifmatch_label">IF-MATCH:</string>
+    <string name="etag_no">(04)</string>
+    <string name="etag_label">ETAG:</string>
+    <string name="ifnonematch_no">(05)</string>
+    <string name="ifnonematch_label">IF-NONE-MATCH:</string>
+    <string name="observe_no">(06)</string>
+    <string name="observe_label">OBSERVE:</string>
+    <string name="location_path_no">(07)</string>
+    <string name="location_path_label">LOCATION_PATH:</string>
+    <string name="contentformat_no">(12)</string>
+    <string name="contentformat_label">CONTENT-FORMAT:</string>
+    <string name="maxage_no">(14)</string>
+    <string name="maxage_label">MAX AGE:</string>
+    <string name="accept_no">(17)</string>
+    <string name="accept_label">ACCEPT:</string>
+    <string name="location_query_no">(20)</string>
+    <string name="location_query_label">LOCATION QUERY</string>
+    <string name="block2_no">(23):</string>
+    <string name="block2_label">BLOCK2:</string>
+    <string name="size1_no">(60):</string>
+    <string name="size1_label">SIZE1:</string>
+
+    <!--Miscellaneous-->
+    <string name="waiting">Waiting…</string>
+    <string name="request_options_label">REQUEST OPTIONS</string>
+    <string name="request_payload_label">REQUEST PAYLOAD (requires Option No. 12)</string>
+    <string name="response_options_label">RESPONSE OPTIONS</string>
+    <string name="response_payload_label">RESPONSE PAYLOAD</string>
+    <string name="payload_undefined">no payload given</string>
+    <string name="stop_observation">Cancel Observation</string>
+</resources>

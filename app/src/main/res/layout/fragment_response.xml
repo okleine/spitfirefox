@@ -1,0 +1,297 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
+    android:background="?android:windowBackground"
+    >
+
+    <TextView
+        android:id="@+id/txt_uri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rectangle"
+        android:padding="5dp"
+    />
+
+    <RelativeLayout
+        android:id="@+id/response"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/txt_type_response"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:paddingRight="5dp"
+            android:text="Type..."/>
+
+        <TextView
+            android:id="@+id/txt_code_response"
+            android:layout_toRightOf="@id/txt_type_response"
+            android:layout_toEndOf="@id/txt_type_response"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:text="Code..."/>
+
+        <RadioGroup
+            android:id="@+id/rad_stop_observation_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+        >
+            <RadioButton
+                android:id="@+id/rad_stop_observation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stop_observation"
+            />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <!--Make the rest scrollable-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--Response Payload-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_rectangle"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/response_payload_label"
+                    android:background="@drawable/rectangle"
+                    android:textColor="#000000"
+                    android:padding="5dp"
+                    />
+
+                <TextView
+                    android:id="@+id/txt_response_payload"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
+                    android:background="@null"
+                    android:hint="@string/payload_undefined"/>
+
+            </LinearLayout>
+
+            <!--Title Options-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/line"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:background="@drawable/rectangle"
+                    android:textColor="#000000"
+                    android:text="@string/response_options_label"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/line"
+                    />
+
+            </LinearLayout>
+
+            <!--Options-->
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="2">
+
+                <TableRow>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/etag_no"
+                        />
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/etag_label"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/txt_etag_response"
+                        android:padding="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/rounded_rectangle"
+                        android:hint="@string/undefined"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/observe_no"
+                        />
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/observe_label"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/txt_observe_response"
+                        android:padding="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/rounded_rectangle"
+                        android:hint="@string/undefined"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/location_path_no"
+                        />
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/location_path_label"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/txt_location_path_response"
+                        android:padding="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/rounded_rectangle"
+                        android:hint="@string/undefined"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/contentformat_no"
+                        />
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/contentformat_label"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/txt_contenttype_response"
+                        android:padding="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/rounded_rectangle"
+                        android:hint="@string/undefined"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/maxage_no"
+                        />
+                    <TextView
+                        android:text="@string/maxage_label"
+                        android:layout_gravity="center_vertical"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/txt_maxage_response"
+                        android:padding="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/rounded_rectangle"
+                        android:hint="@string/undefined"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/location_query_no"
+                        />
+                    <TextView
+                        android:text="@string/location_query_label"
+                        android:layout_gravity="center_vertical"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/txt_location_query_response"
+                        android:padding="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/rounded_rectangle"
+                        android:hint="@string/undefined"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/block2_no"
+                        />
+                    <TextView
+                        android:text="@string/block2_label"
+                        android:layout_gravity="center_vertical"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/txt_block2_response"
+                        android:padding="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/rounded_rectangle"
+                        android:hint="@string/undefined"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/size1_no"
+                        />
+                    <TextView
+                        android:text="@string/size1_label"
+                        android:layout_gravity="center_vertical"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:id="@+id/txt_size1_response"
+                        android:padding="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/rounded_rectangle"
+                        android:hint="@string/undefined"
+                        />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

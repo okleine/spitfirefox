@@ -1,4 +1,4 @@
 Spitfirefox
 ===========
 
-CoAP Browser for Android API 8 (e.g. Samsung Galaxy Tab)
+CoAP Client for Android based on nCoAP
