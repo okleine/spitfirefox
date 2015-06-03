@@ -23,7 +23,7 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven {
-        url "https://maven.itm.uni-luebeck.de/content/repositories/releases"
+        url "https://maven.itm.uni-luebeck.de/content/repositories/snapshots"
     }
 }
 

@@ -14,13 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.net.URI;
 
 import de.uniluebeck.itm.ncoap.application.client.CoapClientApplication;
 import de.uniluebeck.itm.ncoap.message.CoapResponse;
-import de.uniluebeck.itm.ncoap.message.options.UintOptionValue;
 import de.uzl.itm.client.R;
 
 

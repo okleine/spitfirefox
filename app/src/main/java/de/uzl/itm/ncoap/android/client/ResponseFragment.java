@@ -216,7 +216,7 @@ public class ResponseFragment extends Fragment implements RadioGroup.OnCheckedCh
         long block2Number = coapResponse.getBlock2Number();
         if(block2Number != UintOptionValue.UNDEFINED){
             TextView txtBlock2 = (TextView) mainActivity.findViewById(R.id.txt_block2_response);
-            txtBlock2.setText("No: " + block2Number + " | SZX: " + coapResponse.getBlock2Szx());
+            txtBlock2.setText("No: " + block2Number + " | SZX: " + coapResponse.getBlock2EncodedSize());
         }
 
         //TODO: Size1 and Location-URI
