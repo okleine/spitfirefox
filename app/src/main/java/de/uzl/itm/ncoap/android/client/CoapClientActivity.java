@@ -5,26 +5,31 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Spinner;
+
 
 import java.net.URI;
 
-import de.uniluebeck.itm.ncoap.application.client.CoapClientApplication;
-import de.uniluebeck.itm.ncoap.message.CoapResponse;
+import android.widget.Spinner;
 import de.uzl.itm.client.R;
+import de.uzl.itm.ncoap.application.client.CoapClient;
+import de.uzl.itm.ncoap.message.CoapResponse;
 
 
-public class MainActivity extends FragmentActivity implements RequestFragment.SendRequestButtonClickedListener {
+public class CoapClientActivity extends AppCompatActivity implements RequestFragment.SendRequestButtonClickedListener {
 
-    private CoapClientApplication clientApplication;
+    private static long DISCOVER = 0;
+    private static long PING = 5;
+
+    private CoapClient clientApplication;
     private RequestFragment requestFragment;
     private ResponseFragment responseFragment;
 
@@ -32,7 +37,7 @@ public class MainActivity extends FragmentActivity implements RequestFragment.Se
     private ViewPager viewPager;
     private ScreenSlidePagerAdapter viewPagerAdapter;
 
-    public CoapClientApplication getClientApplication(){
+    public CoapClient getClientApplication(){
         return this.clientApplication;
     }
 
@@ -53,17 +58,24 @@ public class MainActivity extends FragmentActivity implements RequestFragment.Se
         viewPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
 
-        this.clientApplication = new CoapClientApplication();
+        //Initialize the action bar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setLogo(R.drawable.spitfire_logo);
+        setSupportActionBar(toolbar);
+
+
+        this.clientApplication = new CoapClient();
         this.requestFragment = new RequestFragment();
         this.responseFragment = new ResponseFragment();
+
+        this.hideKeyboard();
     }
 
     @Override
     public void onBackPressed(){
-        if(viewPager.getCurrentItem() == 0){
+        if(viewPager.getCurrentItem() == 0) {
             super.onBackPressed();
-        }
-        else{
+        } else {
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         }
     }
@@ -95,27 +107,23 @@ public class MainActivity extends FragmentActivity implements RequestFragment.Se
         this.hideKeyboard();
 
         long method = ((Spinner) findViewById(R.id.spn_methods)).getSelectedItemId();
-        //Discover
-        if(method == 0){
+
+        if(method == DISCOVER){
             new ServiceDiscoveryTask(this).execute();
-        }
-        //Ping
-        else if(method == 5){
+        } else if(method == PING) {
             new SendPingTask(this).execute();
-        }
-        else{
-            new SendRequestTask(this).execute();
+        } else {
+            new SendRequestTask(this).execute(method);
         }
     }
 
-    private void hideKeyboard(){
+    private void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         View currentFocus = this.getCurrentFocus();
         IBinder token;
-        if(currentFocus == null){
+        if(currentFocus == null) {
             token = null;
-        }
-        else{
+        } else {
             token = currentFocus.getWindowToken();
         }
         inputManager.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -135,10 +143,10 @@ public class MainActivity extends FragmentActivity implements RequestFragment.Se
 //                    text += " (after " + duration + " ms)";
 //                }
 //
-//                Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG).show();
+//                Toast.makeText(CoapClientActivity.this, text, Toast.LENGTH_LONG).show();
 
                 viewPager.setCurrentItem(1);
-                MainActivity.this.responseFragment.responseReceived(serviceURI, coapResponse);
+                CoapClientActivity.this.responseFragment.responseReceived(serviceURI, coapResponse);
             }
         });
     }

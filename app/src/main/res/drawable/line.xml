@@ -6,6 +6,6 @@
 
     <stroke
         android:width="1px"
-        android:color="@android:color/background_light"
+        android:color="@color/sf_orange"
         />
 </shape>

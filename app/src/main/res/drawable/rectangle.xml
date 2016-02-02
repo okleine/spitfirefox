@@ -7,7 +7,7 @@
         android:color="@android:color/darker_gray"
         />
     <stroke
-        android:width="1px"
-        android:color="@android:color/background_light"
+        android:width="2px"
+        android:color="@color/sf_orange"
         />
 </shape>

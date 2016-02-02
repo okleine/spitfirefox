@@ -19,17 +19,13 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
-import de.uniluebeck.itm.ncoap.application.client.CoapClientApplication;
-import de.uniluebeck.itm.ncoap.application.client.linkformat.LinkFormatDecoder;
-import de.uniluebeck.itm.ncoap.application.server.webservice.linkformat.LinkAttribute;
-import de.uniluebeck.itm.ncoap.communication.dispatching.client.ClientCallback;
-import de.uniluebeck.itm.ncoap.message.CoapMessage;
-import de.uniluebeck.itm.ncoap.message.CoapRequest;
-import de.uniluebeck.itm.ncoap.message.CoapResponse;
-import de.uniluebeck.itm.ncoap.message.MessageCode;
-import de.uniluebeck.itm.ncoap.message.MessageType;
+
 import de.uzl.itm.client.R;
-import de.uzl.itm.ncoap.android.client.MainActivity;
+import de.uzl.itm.ncoap.application.client.CoapClient;
+import de.uzl.itm.ncoap.application.client.linkformat.LinkFormatDecoder;
+import de.uzl.itm.ncoap.application.server.webresource.linkformat.LinkAttribute;
+import de.uzl.itm.ncoap.communication.dispatching.client.ClientCallback;
+import de.uzl.itm.ncoap.message.*;
 
 
 /**
@@ -37,43 +33,56 @@ import de.uzl.itm.ncoap.android.client.MainActivity;
  */
 public class ServiceDiscoveryTask extends AsyncTask<Void, Void, Void> {
 
-    private MainActivity mainActivity;
-    private CoapClientApplication clientApplication;
+    private CoapClientActivity activity;
+    private CoapClient coapClient;
     private ProgressDialog progressDialog;
 
-    public ServiceDiscoveryTask(MainActivity MainActivity){
-        this.mainActivity = MainActivity;
-        this.clientApplication = this.mainActivity.getClientApplication();
-        this.progressDialog = new ProgressDialog(this.mainActivity);
+    private String serverName;
+    private int portNumber;
+    private boolean confirmable;
+
+    public ServiceDiscoveryTask(CoapClientActivity activity){
+        this.activity = activity;
+        this.coapClient = this.activity.getClientApplication();
+        this.progressDialog = new ProgressDialog(this.activity);
     }
+
+
+    @Override
+    protected void onPreExecute(){
+        //Read server name from UI
+        this.serverName = ((EditText) activity.findViewById(R.id.txt_server)).getText().toString();
+
+        try {
+            this.portNumber = Integer.valueOf(((EditText) activity.findViewById(R.id.txt_port)).getText().toString());
+        } catch(NumberFormatException ex) {
+            this.portNumber = 5683;
+        }
+
+        this.confirmable = ((RadioButton) activity.findViewById(R.id.rad_con)).isChecked();
+
+        progressDialog.setMessage(
+                this.activity.getResources().getString(R.string.waiting)
+        );
+        progressDialog.show();
+    }
+
 
     @Override
     protected Void doInBackground(final Void... nothing) {
+        try {
 
-        try{
-            //Read server name from UI
-            String serverName = ((EditText) mainActivity.findViewById(R.id.txt_server)).getText().toString();
-            if("".equals(serverName)){
+            if("".equals(serverName)) {
                 showToast("Enter Server (Host or IP)");
                 return null;
             }
 
-            //Read port from UI
-            EditText txtPort = ((EditText) mainActivity.findViewById(R.id.txt_port));
-            int port;
-            if("".equals(txtPort.getText().toString())){
-                port = 5683;
-            }
-            else {
-                port = Integer.valueOf(txtPort.getText().toString());
-            }
-
             //Create socket address from server name and port
-            InetSocketAddress remoteEndpoint = new InetSocketAddress(InetAddress.getByName(serverName), port);
+            InetSocketAddress remoteEndpoint = new InetSocketAddress(InetAddress.getByName(serverName), portNumber);
 
             //Read CON/NON from UI
             MessageType.Name messageType;
-            if(((RadioButton) mainActivity.findViewById(R.id.rad_con)).isChecked()){
+            if(this.confirmable){
                 messageType = MessageType.Name.CON;
             }
             else{
@@ -81,10 +90,10 @@ public class ServiceDiscoveryTask extends AsyncTask<Void, Void, Void> {
             }
 
             //Create CoAP request to discover resources
-            URI targetURI = new URI("coap", null, serverName, port, "/.well-known/core", null, null);
+            URI targetURI = new URI("coap", null, serverName, portNumber, "/.well-known/core", null, null);
             CoapRequest coapRequest = new CoapRequest(messageType, MessageCode.Name.GET, targetURI);
 
-            this.clientApplication.sendCoapRequest(coapRequest, new ServiceDiscoveryCallback(), remoteEndpoint);
+            this.coapClient.sendCoapRequest(coapRequest, new ServiceDiscoveryCallback(), remoteEndpoint);
 
             return null;
 
@@ -96,30 +105,22 @@ public class ServiceDiscoveryTask extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    @Override
-    protected void onPreExecute(){
-        progressDialog.setMessage(
-                this.mainActivity.getResources().getString(R.string.waiting)
-        );
-        progressDialog.show();
-    }
-
 
     private void showToast(final String text){
-        mainActivity.runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
-    private class ServiceDiscoveryCallback extends ClientCallback{
+    private class ServiceDiscoveryCallback extends ClientCallback {
 
         @Override
         public void processCoapResponse(final CoapResponse coapResponse) {
-            mainActivity.runOnUiThread(new Runnable() {
+            activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     progressDialog.dismiss();
@@ -133,16 +134,16 @@ public class ServiceDiscoveryTask extends AsyncTask<Void, Void, Void> {
 
                     showToast("Found " + serviceNames.length + " Services!");
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(mainActivity,
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
                             android.R.layout.simple_spinner_dropdown_item, serviceNames);
 
-                    AutoCompleteTextView txtService = ((AutoCompleteTextView) mainActivity.findViewById(R.id.txt_service));
+                    AutoCompleteTextView txtService = ((AutoCompleteTextView) activity.findViewById(R.id.txt_service));
                     txtService.setAdapter(adapter);
                     txtService.setHint(R.string.service_hint2);
 
 
                     //Set Method Spinner to GET
-                    ((Spinner) mainActivity.findViewById(R.id.spn_methods)).setSelection(1);
+                    ((Spinner) activity.findViewById(R.id.spn_methods)).setSelection(1);
 
 
                 }
@@ -152,7 +153,7 @@ public class ServiceDiscoveryTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         public void processMiscellaneousError(final String description) {
-            mainActivity.runOnUiThread(new Runnable() {
+            activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     showToast("ERROR: " + description + "!");

@@ -4,43 +4,53 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.EditText;
 import android.widget.Toast;
+import de.uzl.itm.client.R;
+import de.uzl.itm.ncoap.application.client.CoapClient;
+import de.uzl.itm.ncoap.communication.dispatching.client.ClientCallback;
+import de.uzl.itm.ncoap.message.CoapResponse;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-
-import de.uniluebeck.itm.ncoap.application.client.CoapClientApplication;
-import de.uniluebeck.itm.ncoap.communication.dispatching.client.ClientCallback;
-import de.uniluebeck.itm.ncoap.message.CoapResponse;
-import de.uzl.itm.client.R;
-import de.uzl.itm.ncoap.android.client.MainActivity;
 
 /**
  * Created by olli on 07.05.15.
  */
 public class SendPingTask extends AsyncTask<Void, Void, Void>{
 
-    private MainActivity mainActivity;
-    private CoapClientApplication clientApplication;
+    private CoapClientActivity activity;
+    private CoapClient clientApplication;
     private ProgressDialog progressDialog;
 
-    public SendPingTask(MainActivity MainActivity){
-        this.mainActivity = MainActivity;
-        this.clientApplication = this.mainActivity.getClientApplication();
-        this.progressDialog = new ProgressDialog(this.mainActivity);
+    private String serverName;
+    private int portNumber;
+
+    public SendPingTask(CoapClientActivity activity){
+        this.activity = activity;
+        this.clientApplication = activity.getClientApplication();
+        this.progressDialog = new ProgressDialog(activity);
     }
 
     @Override
     protected void onPreExecute(){
+        this.serverName = ((EditText) activity.findViewById(R.id.txt_server) ).getText().toString();
+
+        try {
+            this.portNumber = Integer.valueOf(((EditText) activity.findViewById(R.id.txt_port)).getText().toString());
+        } catch(NumberFormatException ex) {
+            this.portNumber = 5683;
+        }
+
         progressDialog.setMessage(
-                this.mainActivity.getResources().getString(R.string.waiting)
+                this.activity.getResources().getString(R.string.waiting)
         );
         progressDialog.show();
     }
 
 
     @Override
-    protected Void doInBackground(Void... nothing) {
-        String serverName = ((EditText) mainActivity.findViewById(R.id.txt_server)).getText().toString();
+    protected Void doInBackground(Void... params) {
+
+        //String serverName = ((EditText) activity.findViewById(R.id.txt_server)).getText().toString();
 
         if("".equals(serverName)){
             showToast("Enter Server (Host or IP)");
@@ -48,18 +58,9 @@ public class SendPingTask extends AsyncTask<Void, Void, Void>{
         }
 
         final InetSocketAddress remoteEndpoint;
-        try{
-            EditText txtPort = ((EditText) mainActivity.findViewById(R.id.txt_port));
-            int port;
-            if("".equals(txtPort.getText().toString())){
-                port = 5683;
-            }
-            else {
-                port = Integer.valueOf(txtPort.getText().toString());
-            }
-            remoteEndpoint = new InetSocketAddress(InetAddress.getByName(serverName), port);
-        }
-        catch (final Exception e) {
+        try {
+            remoteEndpoint = new InetSocketAddress(InetAddress.getByName(serverName), portNumber);
+        } catch (final Exception e) {
             showToast(e.getMessage());
             return null;
         }
@@ -70,15 +71,15 @@ public class SendPingTask extends AsyncTask<Void, Void, Void>{
     }
 
     private void showToast(final String text){
-        mainActivity.runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private class PingCallback extends ClientCallback{
+    private class PingCallback extends ClientCallback {
 
         private InetSocketAddress remoteEndpoint;
         private long timeSent;

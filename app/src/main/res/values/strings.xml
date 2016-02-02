@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">nCoAP Client</string>
+    <string name="app_name">SPITFIREFOX (CoAP Client)</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
@@ -30,10 +30,11 @@
 
     <!-- For Options -->
     <string name="undefined">undefined</string>
+    <string name="unsupported">to be implemented</string>
     <string name="ifmatch_no">(01)</string>
-    <string name="ifmatch_label">IF-MATCH:</string>
+    <string name="ifmatch_label">IF-MATCH (hex):</string>
     <string name="etag_no">(04)</string>
-    <string name="etag_label">ETAG:</string>
+    <string name="etag_label">ETAG (hex):</string>
     <string name="ifnonematch_no">(05)</string>
     <string name="ifnonematch_label">IF-NONE-MATCH:</string>
     <string name="observe_no">(06)</string>
@@ -55,8 +56,8 @@
 
     <!--Miscellaneous-->
     <string name="waiting">Waiting…</string>
-    <string name="request_options_label">REQUEST OPTIONS</string>
-    <string name="request_payload_label">REQUEST PAYLOAD (requires Option No. 12)</string>
+    <string name="request_options_label">REQUEST OPTIONS:</string>
+    <string name="request_payload_label">REQUEST PAYLOAD (requires Option No. 12):</string>
     <string name="response_options_label">RESPONSE OPTIONS</string>
     <string name="response_payload_label">RESPONSE PAYLOAD</string>
     <string name="payload_undefined">no payload given</string>

@@ -1,8 +1,59 @@
 <resources>
 
+    <color name="sf_orange">#ff6600</color>
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <!--<item name="android:windowNoTitle">false</item>-->
     </style>
 
+    <!-- URI related Text Boxes -->
+    <style name="UriComponent" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:background">@drawable/rounded_rectangle</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="AppTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Heading" parent="@android:style/TextAppearance.WindowTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+    <!-- Option Styles (Numbers, Labels, Text Boxes,...) -->
+
+    <style name="OptionRow">
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="OptionLabel" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
+
+    <style name="OptionValue" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:hint">@string/undefined</item>
+        <item name="android:background">@drawable/rounded_rectangle</item>
+        <item name="android:textColor">#00FF00</item>
+    </style>
+
+    <style name="OptionValue.Inactive">
+        <item name="android:enabled">false</item>
+        <item name="android:hint">@string/unsupported</item>
+    </style>
 </resources>

@@ -2,82 +2,84 @@ package de.uzl.itm.ncoap.android.client;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
 
-import de.uniluebeck.itm.ncoap.application.client.CoapClientApplication;
-import de.uniluebeck.itm.ncoap.communication.dispatching.client.ClientCallback;
-import de.uniluebeck.itm.ncoap.message.CoapMessage;
-import de.uniluebeck.itm.ncoap.message.CoapRequest;
-import de.uniluebeck.itm.ncoap.message.CoapResponse;
-import de.uniluebeck.itm.ncoap.message.MessageCode;
-import de.uniluebeck.itm.ncoap.message.MessageType;
-import de.uniluebeck.itm.ncoap.message.options.OpaqueOptionValue;
 import de.uzl.itm.client.R;
-import de.uzl.itm.ncoap.android.client.MainActivity;
+import de.uzl.itm.ncoap.application.client.CoapClient;
+import de.uzl.itm.ncoap.communication.dispatching.client.ClientCallback;
+import de.uzl.itm.ncoap.message.*;
 
 /**
  * Created by olli on 07.05.15.
  */
-public class SendRequestTask extends AsyncTask<Void, Void, SendRequestTask.AndroidClientCallback>{
+public class SendRequestTask extends AsyncTask<Long, Void, SendRequestTask.SpitfirefoxCallback>{
 
     private ProgressDialog progressDialog;
-    private MainActivity mainActivity;
-    private CoapClientApplication clientApplication;
+    private CoapClientActivity activity;
+    private CoapClient coapClient;
+
+    private String serverName, localUri, acceptedFormats, payloadFormat, payload;
+    private int portNumber;
+    private boolean confirmable, observe;
 
 
-    public SendRequestTask(MainActivity mainActivity){
-        this.mainActivity = mainActivity;
-        this.clientApplication = mainActivity.getClientApplication();
-        this.progressDialog = new ProgressDialog(this.mainActivity);
+    public SendRequestTask(CoapClientActivity activity){
+        this.activity = activity;
+        this.coapClient = activity.getClientApplication();
+        this.progressDialog = new ProgressDialog(this.activity);
     }
 
 
     @Override
     protected void onPreExecute(){
-        progressDialog.setMessage(this.mainActivity.getResources().getString(R.string.waiting));
+
+        this.serverName = ((EditText) activity.findViewById(R.id.txt_server) ).getText().toString();
+
+        try {
+            this.portNumber = Integer.valueOf(((EditText) activity.findViewById(R.id.txt_port)).getText().toString());
+        } catch(NumberFormatException ex) {
+            this.portNumber = 5683;
+        }
+
+        this.localUri = ((AutoCompleteTextView) activity.findViewById(R.id.txt_service)).getText().toString();
+        this.confirmable = ((RadioButton) activity.findViewById(R.id.rad_con)).isChecked();
+        this.observe = ((CheckBox) activity.findViewById(R.id.chk_observation)).isChecked();
+        this.acceptedFormats = ((EditText) activity.findViewById(R.id.txt_accept)).getText().toString();
+        this.payloadFormat = ((EditText) activity.findViewById(R.id.txt_contentformat)).getText().toString();
+        this.payload = ((EditText) activity.findViewById(R.id.txt_payload)).getText().toString();
+
+        progressDialog.setMessage(this.activity.getResources().getString(R.string.waiting));
         progressDialog.show();
     }
 
-    @Override
-    protected void onPostExecute(AndroidClientCallback clientCallback){
-        mainActivity.getResponseFragment().setClientCallback(mainActivity, clientCallback);
-    }
 
     @Override
-    protected AndroidClientCallback doInBackground(Void... nothing){
+    protected void onPostExecute(SpitfirefoxCallback clientCallback){
+        activity.getResponseFragment().setClientCallback(activity, clientCallback);
+    }
+
+
+    @Override
+    protected SpitfirefoxCallback doInBackground(Long... method){
         try{
             //Read server name from UI
-            String serverName = ((EditText) mainActivity.findViewById(R.id.txt_server)).getText().toString();
+            //String serverName = ((EditText) activity.findViewById(R.id.txt_server)).getText().toString();
             if("".equals(serverName)){
                 showToast("Enter Server (Host or IP)");
                 return null;
             }
 
-            //Read port from UI
-            EditText txtPort = ((EditText) mainActivity.findViewById(R.id.txt_port));
-            int port;
-            if("".equals(txtPort.getText().toString())){
-                port = 5683;
-            }
-            else {
-                port = Integer.valueOf(txtPort.getText().toString());
-            }
-
             //Create socket address from server name and port
-            InetSocketAddress remoteEndpoint = new InetSocketAddress(InetAddress.getByName(serverName), port);
+            InetSocketAddress remoteEndpoint = new InetSocketAddress(InetAddress.getByName(serverName), portNumber);
 
             //Read CON/NON from UI
             MessageType.Name messageType;
-            if(((RadioButton) mainActivity.findViewById(R.id.rad_con)).isChecked()){
+            //if(((RadioButton) activity.findViewById(R.id.rad_con)).isChecked()){
+            if(confirmable){
                 messageType = MessageType.Name.CON;
             }
             else{
@@ -85,72 +87,64 @@ public class SendRequestTask extends AsyncTask<Void, Void, SendRequestTask.Andro
             }
 
             //Read service from UI
-            AutoCompleteTextView txtService = (AutoCompleteTextView) mainActivity.findViewById(R.id.txt_service);
-            String localURI = txtService.getText().toString();
+            //AutoCompleteTextView txtService = (AutoCompleteTextView) activity.findViewById(R.id.txt_service);
+            //String localURI = txtService.getText().toString();
 
             //Create URI from server name, port and service path (and query)
-            URI serviceURI = new URI("coap", null, serverName, remoteEndpoint.getPort(), localURI, null, null);
+            URI serviceURI = new URI("coap", null, serverName, remoteEndpoint.getPort(), localUri, null, null);
 
             //Read method from UI
             MessageCode.Name messageCode = MessageCode.Name.UNKNOWN;
 
-            long method = ((Spinner) mainActivity.findViewById(R.id.spn_methods)).getSelectedItemId();
-            if(method == 1){
+            //long method = ((Spinner) activity.findViewById(R.id.spn_methods)).getSelectedItemId();
+            if(method[0] == 1) {
                 messageCode = MessageCode.Name.GET;
-            }
-            else if(method == 2){
+            } else if(method[0] == 2) {
                 messageCode = MessageCode.Name.POST;
-            }
-            else if(method == 3){
+            } else if(method[0] == 3) {
                 messageCode = MessageCode.Name.PUT;
-            }
-            else if(method == 4){
+            } else if(method[0] == 4) {
                 messageCode = MessageCode.Name.DELETE;
             }
 
             //Create initial CoAP request
             CoapRequest coapRequest = new CoapRequest(messageType, messageCode, serviceURI);
 
-
-            //Read OBS from UI
-            CheckBox chkObserve = ((CheckBox) mainActivity.findViewById(R.id.chk_observation));
-            if(chkObserve.isChecked()){
-                if(method != 1){
-                    showToast("Use GET for observation!");
-                    return null;
-                }
+            //Set observe option (for GET only)
+            if(observe && method[0] != 1) {
+                this.progressDialog.dismiss();
+                showToast("Use GET for observation!");
+                return null;
+            } else if (observe) {
                 coapRequest.setObserve(0);
             }
 
-            //Create accept options
-            String strAcceptValues = ((EditText) mainActivity.findViewById(R.id.txt_accept)).getText().toString();
-            if(!("".equals(strAcceptValues))){
-                String[] array = strAcceptValues.split(";");
-                long[] acceptValues = new long[array.length];
-                for(int i = 0; i < acceptValues.length; i++){
-                    if(!("".equals(array[i]))){
-                        acceptValues[i] = Long.valueOf(array[i]);
+            //Set accept option values in request (if any)
+            if(!("".equals(this.acceptedFormats))){
+                String[] array = this.acceptedFormats.split(";");
+                long[] acceptOptionValues = new long[array.length];
+                for(int i = 0; i < acceptOptionValues.length; i++) {
+                    if(!("".equals(array[i]))) {
+                        acceptOptionValues[i] = Long.valueOf(array[i]);
                     }
                 }
-                coapRequest.setAccept(acceptValues);
+                coapRequest.setAccept(acceptOptionValues);
             }
 
-            //Read payload and content type from UI
-            String payload = ((EditText) mainActivity.findViewById(R.id.txt_payload)).getText().toString();
-            String contentFormat = ((EditText) mainActivity.findViewById(R.id.txt_contenttype)).getText().toString();
-
-            if(!("".equals(payload)) && "".equals(contentFormat)){
+            //Set payload related options in request (if any)
+            if(!("".equals(this.payload)) && "".equals(this.payloadFormat)){
                 this.progressDialog.dismiss();
                 showToast("No Content Type for payload defined!");
                 return null;
-            }
-            else if (!("".equals(contentFormat))){
-                coapRequest.setContent(payload.getBytes(CoapMessage.CHARSET), Long.valueOf(contentFormat));
+            } else if (!("".equals(payloadFormat))){
+                coapRequest.setContent(payload.getBytes(CoapMessage.CHARSET), Long.valueOf(payloadFormat));
             }
 
-            AndroidClientCallback clientCallback = new AndroidClientCallback(serviceURI, coapRequest.isObservationRequest());
-
-            this.clientApplication.sendCoapRequest(coapRequest, clientCallback, remoteEndpoint);
+            //Create callback and send request
+            SpitfirefoxCallback clientCallback = new SpitfirefoxCallback(
+                    serviceURI, coapRequest.isObservationRequest()
+            );
+            this.coapClient.sendCoapRequest(coapRequest, clientCallback, remoteEndpoint);
 
             return clientCallback;
         }
@@ -164,23 +158,23 @@ public class SendRequestTask extends AsyncTask<Void, Void, SendRequestTask.Andro
 
 
     private void showToast(final String text){
-        mainActivity.runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
-    public class AndroidClientCallback extends ClientCallback{
+    public class SpitfirefoxCallback extends ClientCallback {
 
         private URI serviceURI;
         private int retransmissionCounter;
         private long startTime;
         private boolean observationCancelled;
 
-        private AndroidClientCallback(URI serviceURI, boolean observation) {
+        private SpitfirefoxCallback(URI serviceURI, boolean observation) {
             this.serviceURI = serviceURI;
             this.retransmissionCounter = 0;
             this.startTime = System.currentTimeMillis();
@@ -192,7 +186,7 @@ public class SendRequestTask extends AsyncTask<Void, Void, SendRequestTask.Andro
         public void processCoapResponse(CoapResponse coapResponse) {
             long duration = System.currentTimeMillis() - startTime;
             progressDialog.dismiss();
-            mainActivity.processResponse(coapResponse, this.serviceURI, duration);
+            activity.processResponse(coapResponse, this.serviceURI, duration);
         }
 
         @Override
