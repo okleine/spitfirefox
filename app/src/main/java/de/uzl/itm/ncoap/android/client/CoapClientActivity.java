@@ -61,6 +61,7 @@ public class CoapClientActivity extends AppCompatActivity implements RequestFrag
         //Initialize the action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setLogo(R.drawable.spitfire_logo);
+        toolbar.setSubtitle(R.string.app_subtitle);
         setSupportActionBar(toolbar);
 
 

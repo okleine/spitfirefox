@@ -9,8 +9,7 @@
     </style>
 
     <!-- URI related Text Boxes -->
-    <style name="UriComponent" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">16sp</item>
+    <style name="UriComponent" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:background">@drawable/rounded_rectangle</item>
@@ -18,7 +17,12 @@
     </style>
 
     <style name="AppTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppSubTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -49,11 +53,16 @@
         <item name="android:padding">5dp</item>
         <item name="android:hint">@string/undefined</item>
         <item name="android:background">@drawable/rounded_rectangle</item>
-        <item name="android:textColor">#00FF00</item>
+        <item name="android:textColor">#333333</item>
     </style>
 
     <style name="OptionValue.Inactive">
         <item name="android:enabled">false</item>
         <item name="android:hint">@string/unsupported</item>
+    </style>
+
+    <style name="Payload" parent="OptionValue">
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:gravity">top</item>
     </style>
 </resources>

@@ -70,228 +70,69 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--Response Payload-->
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_rectangle"
-                android:layout_marginTop="5dp">
+            <!-- OPTIONS -->
+            <TextView style="@style/Heading" android:text="@string/response_options_label"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/response_payload_label"
-                    android:background="@drawable/rectangle"
-                    android:textColor="#000000"
-                    android:padding="5dp"
-                    />
-
-                <TextView
-                    android:id="@+id/txt_response_payload"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:padding="5dp"
-                    android:background="@null"
-                    android:hint="@string/payload_undefined"/>
-
-            </LinearLayout>
-
-            <!--Title Options-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="2px"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/line"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:background="@drawable/rectangle"
-                    android:textColor="#000000"
-                    android:text="@string/response_options_label"
-                    />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="2px"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/line"
-                    />
-
-            </LinearLayout>
-
-            <!--Options-->
             <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="2">
 
-                <TableRow>
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/etag_no"
-                        />
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/etag_label"
-                        android:padding="5dp"
-                        />
-                    <TextView
-                        android:id="@+id/txt_etag_response"
-                        android:padding="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/rounded_rectangle"
-                        android:hint="@string/undefined"
-                        />
+                <TableRow style="@style/OptionRow" android:id="@+id/tabrow_etag_response">
+                    <TextView style="@style/OptionLabel" android:text="@string/etag_no"/>
+                    <TextView style="@style/OptionLabel" android:text="@string/etag_label"/>
+                    <TextView style="@style/OptionValue" android:id="@+id/txt_etag_response"/>
                 </TableRow>
 
-                <TableRow>
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/observe_no"
-                        />
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/observe_label"
-                        android:padding="5dp"
-                        />
-                    <TextView
-                        android:id="@+id/txt_observe_response"
-                        android:padding="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/rounded_rectangle"
-                        android:hint="@string/undefined"
-                        />
+                <TableRow style="@style/OptionRow" android:id="@+id/tabrow_observe_response">
+                    <TextView style="@style/OptionLabel" android:text="@string/observe_no"/>
+                    <TextView style="@style/OptionLabel" android:text="@string/observe_label"/>
+                    <TextView style="@style/OptionValue" android:id="@+id/txt_observe_response"/>
                 </TableRow>
 
-                <TableRow>
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/location_path_no"
-                        />
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/location_path_label"
-                        android:padding="5dp"
-                        />
-                    <TextView
-                        android:id="@+id/txt_location_path_response"
-                        android:padding="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/rounded_rectangle"
-                        android:hint="@string/undefined"
-                        />
+                <TableRow style="@style/OptionRow" android:id="@+id/tabrow_location_path_response">
+                    <TextView style="@style/OptionLabel" android:text="@string/location_path_no"/>
+                    <TextView style="@style/OptionLabel" android:text="@string/location_path_label"/>
+                    <TextView style="@style/OptionValue" android:id="@+id/txt_location_path_response"/>
                 </TableRow>
 
-                <TableRow>
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/contentformat_no"
-                        />
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/contentformat_label"
-                        android:padding="5dp"
-                        />
-                    <TextView
-                        android:id="@+id/txt_contenttype_response"
-                        android:padding="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/rounded_rectangle"
-                        android:hint="@string/undefined"
-                        />
+                <TableRow style="@style/OptionRow" android:id="@+id/tabrow_content_format_response">
+                    <TextView style="@style/OptionLabel" android:text="@string/contentformat_no"/>
+                    <TextView style="@style/OptionLabel" android:text="@string/contentformat_label"/>
+                    <TextView style="@style/OptionValue" android:id="@+id/txt_contenttype_response"/>
                 </TableRow>
 
-                <TableRow>
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/maxage_no"
-                        />
-                    <TextView
-                        android:text="@string/maxage_label"
-                        android:layout_gravity="center_vertical"
-                        android:padding="5dp"
-                        />
-                    <TextView
-                        android:id="@+id/txt_maxage_response"
-                        android:padding="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/rounded_rectangle"
-                        android:hint="@string/undefined"
-                        />
+                <TableRow style="@style/OptionRow" android:id="@+id/tabrow_max_age_response">
+                    <TextView style="@style/OptionLabel" android:text="@string/max_age_no"/>
+                    <TextView style="@style/OptionLabel" android:text="@string/max_age_label"/>
+                    <TextView style="@style/OptionValue" android:id="@+id/txt_max_age_response"/>
                 </TableRow>
 
-                <TableRow>
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/location_query_no"
-                        />
-                    <TextView
-                        android:text="@string/location_query_label"
-                        android:layout_gravity="center_vertical"
-                        android:padding="5dp"
-                        />
-                    <TextView
-                        android:id="@+id/txt_location_query_response"
-                        android:padding="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/rounded_rectangle"
-                        android:hint="@string/undefined"
-                        />
+                <TableRow style="@style/OptionRow" android:id="@+id/tabrow_location_query_response">
+                    <TextView style="@style/OptionLabel" android:text="@string/location_query_no"/>
+                    <TextView style="@style/OptionLabel" android:text="@string/location_query_label"/>
+                    <TextView style="@style/OptionValue" android:id="@+id/txt_location_query_response"/>
                 </TableRow>
 
-                <TableRow>
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/block2_no"
-                        />
-                    <TextView
-                        android:text="@string/block2_label"
-                        android:layout_gravity="center_vertical"
-                        android:padding="5dp"
-                        />
-                    <TextView
-                        android:id="@+id/txt_block2_response"
-                        android:padding="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/rounded_rectangle"
-                        android:hint="@string/undefined"
-                        />
+                <TableRow style="@style/OptionRow" android:id="@+id/tabrow_block2_response">
+                    <TextView style="@style/OptionLabel" android:text="@string/block2_no"/>
+                    <TextView style="@style/OptionLabel" android:text="@string/block2_label"/>
+                    <TextView style="@style/OptionValue" android:id="@+id/txt_block2_response"/>
                 </TableRow>
 
-                <TableRow>
-                    <TextView
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/size1_no"
-                        />
-                    <TextView
-                        android:text="@string/size1_label"
-                        android:layout_gravity="center_vertical"
-                        android:padding="5dp"
-                        />
-                    <TextView
-                        android:id="@+id/txt_size1_response"
-                        android:padding="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/rounded_rectangle"
-                        android:hint="@string/undefined"
-                        />
+                <TableRow style="@style/OptionRow" android:id="@+id/tabrow_size1_response">
+                    <TextView style="@style/OptionLabel" android:text="@string/size1_no"/>
+                    <TextView style="@style/OptionLabel" android:text="@string/size1_label"/>
+                    <TextView style="@style/OptionValue" android:id="@+id/txt_size1_response"/>
                 </TableRow>
             </TableLayout>
+
+            <!-- PAYLOAD -->
+            <TextView style="@style/Heading" android:text="@string/response_payload_label"/>
+
+            <TextView style="@style/Payload" android:id="@+id/txt_response_payload"
+                      android:hint="@string/payload_undefined"/>
+
         </LinearLayout>
     </ScrollView>
 

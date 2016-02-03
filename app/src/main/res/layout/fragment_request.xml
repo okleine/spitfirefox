@@ -95,29 +95,8 @@
     </RelativeLayout>
 
     <!--Service-->
-    <AutoCompleteTextView
-        android:id="@+id/txt_service"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/service_hint"
-        android:background="@drawable/rounded_rectangle"
-        android:padding="5dp"
-        android:completionThreshold="1"
-    />
-
-    <!--Title Options-->
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:layout_marginBottom="5dp"-->
-        <!--android:orientation="vertical"-->
-        <!--android:weightSum="2">-->
-
-       <!---->
-
-    <!--</LinearLayout>-->
+    <AutoCompleteTextView style="@style/UriComponent" android:id="@+id/txt_service" android:hint="@string/service_hint"
+        android:layout_width="match_parent" android:completionThreshold="1"/>
 
     <!--Make the rest scrollable-->
     <ScrollView
@@ -207,10 +186,8 @@
                 <TextView style="@style/Heading"
                         android:text="@string/request_payload_label"/>
 
-                <EditText style="@style/OptionValue"
+                <EditText style="@style/Payload"
                     android:id="@+id/txt_payload"
-                    android:layout_height="fill_parent"
-                    android:gravity="top"
                     android:hint="@string/payload_undefined"/>
 
             </LinearLayout>

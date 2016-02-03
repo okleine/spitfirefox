@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">SPITFIREFOX (CoAP Client)</string>
+    <string name="app_name">SPITFIREFOX</string>
+    <string name="app_subtitle">CoAP Client</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">No settings (yet)…</string>
 
     <!--For the Request Fragment-->
     <string name="server_hint">Hostname or IP</string>
@@ -29,7 +30,7 @@
     </string-array>
 
     <!-- For Options -->
-    <string name="undefined">undefined</string>
+    <string name="undefined">none</string>
     <string name="unsupported">to be implemented</string>
     <string name="ifmatch_no">(01)</string>
     <string name="ifmatch_label">IF-MATCH (hex):</string>
@@ -43,8 +44,8 @@
     <string name="location_path_label">LOCATION_PATH:</string>
     <string name="contentformat_no">(12)</string>
     <string name="contentformat_label">CONTENT-FORMAT:</string>
-    <string name="maxage_no">(14)</string>
-    <string name="maxage_label">MAX AGE:</string>
+    <string name="max_age_no">(14)</string>
+    <string name="max_age_label">MAX AGE:</string>
     <string name="accept_no">(17)</string>
     <string name="accept_label">ACCEPT:</string>
     <string name="location_query_no">(20)</string>
@@ -56,7 +57,7 @@
 
     <!--Miscellaneous-->
     <string name="waiting">Waiting…</string>
-    <string name="request_options_label">REQUEST OPTIONS:</string>
+    <string name="request_options_label">MORE REQUEST OPTIONS:</string>
     <string name="request_payload_label">REQUEST PAYLOAD (requires Option No. 12):</string>
     <string name="response_options_label">RESPONSE OPTIONS</string>
     <string name="response_payload_label">RESPONSE PAYLOAD</string>

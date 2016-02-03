@@ -37,7 +37,7 @@ public class SendRequestTask extends AsyncTask<Long, Void, SendRequestTask.Spitf
     @Override
     protected void onPreExecute(){
 
-        this.serverName = ((EditText) activity.findViewById(R.id.txt_server) ).getText().toString();
+        this.serverName = ((EditText) activity.findViewById(R.id.txt_server)).getText().toString();
 
         try {
             this.portNumber = Integer.valueOf(((EditText) activity.findViewById(R.id.txt_port)).getText().toString());
@@ -81,22 +81,15 @@ public class SendRequestTask extends AsyncTask<Long, Void, SendRequestTask.Spitf
             //if(((RadioButton) activity.findViewById(R.id.rad_con)).isChecked()){
             if(confirmable){
                 messageType = MessageType.Name.CON;
-            }
-            else{
+            } else {
                 messageType = MessageType.Name.NON;
             }
-
-            //Read service from UI
-            //AutoCompleteTextView txtService = (AutoCompleteTextView) activity.findViewById(R.id.txt_service);
-            //String localURI = txtService.getText().toString();
 
             //Create URI from server name, port and service path (and query)
             URI serviceURI = new URI("coap", null, serverName, remoteEndpoint.getPort(), localUri, null, null);
 
-            //Read method from UI
+            //Define method to be set in request
             MessageCode.Name messageCode = MessageCode.Name.UNKNOWN;
-
-            //long method = ((Spinner) activity.findViewById(R.id.spn_methods)).getSelectedItemId();
             if(method[0] == 1) {
                 messageCode = MessageCode.Name.GET;
             } else if(method[0] == 2) {
@@ -131,7 +124,7 @@ public class SendRequestTask extends AsyncTask<Long, Void, SendRequestTask.Spitf
                 coapRequest.setAccept(acceptOptionValues);
             }
 
-            //Set payload related options in request (if any)
+            //Set payload and payload related options in request (if any)
             if(!("".equals(this.payload)) && "".equals(this.payloadFormat)){
                 this.progressDialog.dismiss();
                 showToast("No Content Type for payload defined!");
@@ -147,8 +140,7 @@ public class SendRequestTask extends AsyncTask<Long, Void, SendRequestTask.Spitf
             this.coapClient.sendCoapRequest(coapRequest, clientCallback, remoteEndpoint);
 
             return clientCallback;
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             this.progressDialog.dismiss();
             showToast(e.getMessage());
             return null;
