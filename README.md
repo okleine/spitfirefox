@@ -1,3 +1,5 @@
 ## nCoAP Client for Android
 
-A CoAP Client for Android based on nCoAP as Android Studio Project. It is tested to run on a Samsung Galaxy Nexus (API 18).
+A CoAP Client for Android based on nCoAP as IntelliJ Project. It is tested to run on a Samsung Galaxy S3 Mini (with API 19).
+
+![alt tag](https://github.com/okleine/spitfirefox/blob/master/screenshots/request_fragment.png)
