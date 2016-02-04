@@ -1,6 +1,11 @@
-## nCoAP Client for Android
+## SPITFIREFOX - A CoAP Client for Android
 
-A CoAP Client for Android based on nCoAP as IntelliJ Project. It is tested to run on a Samsung Galaxy S3 Mini (with API 19).
+SPITFIREFOX is based on [nCoAP](https://github.com/okleine/nCoAP).
 
 ### Screenshots
-<img style="padding-right:100px" src="https://github.com/okleine/spitfirefox/blob/master/screenshots/request_fragment.png" width="300" /><img src="https://github.com/okleine/spitfirefox/blob/master/screenshots/response_fragment.png" width="300"/>
+
+The following screenshots exmplarly show a request to observe coap://vs0.inf.ethz.ch/obs and the (first) response.
+
+Request Fragment | Response Fragment
+-----------------|------------------
+<img src="https://github.com/okleine/spitfirefox/blob/master/screenshots/request_fragment.png" width="300" /> | <img src="https://github.com/okleine/spitfirefox/blob/master/screenshots/response_fragment.png" width="300"/>
