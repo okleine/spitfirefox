@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListAdapter;
 
+import android.widget.Spinner;
 import de.uzl.itm.client.R;
 
 
@@ -26,8 +27,7 @@ public class RequestFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_request, container, false);
 
         //register this fragment as listener to click events on the send button
@@ -45,6 +45,12 @@ public class RequestFragment extends Fragment implements View.OnClickListener{
                 txtService.setHint(R.string.service_hint2);
             }
         }
+
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.blocksizes,
+                R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        ((Spinner) view.findViewById(R.id.spn_block2)).setAdapter(adapter);
+        ((Spinner) view.findViewById(R.id.spn_block1)).setAdapter(adapter);
 
         return view;
     }

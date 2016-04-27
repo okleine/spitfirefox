@@ -30,30 +30,56 @@
     </string-array>
 
     <!-- For Options -->
-    <string name="undefined">none</string>
+    <string name="none">none</string>
     <string name="unsupported">to be implemented</string>
+
     <string name="ifmatch_no">(01)</string>
     <string name="ifmatch_label">IF-MATCH (hex):</string>
+    <string name="ifmatch_hint"><i>e.g. AB12</i></string>
+
     <string name="etag_no">(04)</string>
     <string name="etag_label">ETAG (hex):</string>
+    <string name="etag_hint"><i>e.g. AB12;CD34</i></string>
+
     <string name="ifnonematch_no">(05)</string>
     <string name="ifnonematch_label">IF-NONE-MATCH:</string>
+
     <string name="observe_no">(06)</string>
     <string name="observe_label">OBSERVE:</string>
+
     <string name="location_path_no">(07)</string>
     <string name="location_path_label">LOCATION_PATH:</string>
+
     <string name="contentformat_no">(12)</string>
     <string name="contentformat_label">CONTENT-FORMAT:</string>
+    <string name="contentformat_hint"><i>e.g. 0</i></string>
+
     <string name="max_age_no">(14)</string>
     <string name="max_age_label">MAX AGE:</string>
+
     <string name="accept_no">(17)</string>
     <string name="accept_label">ACCEPT:</string>
+    <string name="accept_hint"><i>e.g. 0;40</i></string>
+
     <string name="location_query_no">(20)</string>
     <string name="location_query_label">LOCATION QUERY</string>
     <string name="block2_no">(23):</string>
     <string name="block2_label">BLOCK2:</string>
+    <string name="block1_no">(27):</string>
+    <string name="block1_label">BLOCK1:</string>
     <string name="size1_no">(60):</string>
     <string name="size1_label">SIZE1:</string>
+
+    <string-array name="blocksizes">
+        <item>none</item>
+        <item>16</item>
+        <item>32</item>
+        <item>64</item>
+        <item>128</item>
+        <item>256</item>
+        <item>512</item>
+        <item>1024</item>
+    </string-array>
 
     <!--Miscellaneous-->
     <string name="waiting">Waiting…</string>
@@ -63,4 +89,5 @@
     <string name="response_payload_label">RESPONSE PAYLOAD</string>
     <string name="payload_undefined">no payload given</string>
     <string name="stop_observation">Cancel Observation</string>
+    <string name="observation_stopped">Observation stopped</string>
 </resources>

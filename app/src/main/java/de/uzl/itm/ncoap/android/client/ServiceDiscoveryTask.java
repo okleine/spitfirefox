@@ -5,12 +5,14 @@ package de.uzl.itm.ncoap.android.client;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.*;
+import de.uzl.itm.client.R;
+import de.uzl.itm.ncoap.application.client.ClientCallback;
+import de.uzl.itm.ncoap.application.client.CoapClient;
+import de.uzl.itm.ncoap.application.client.linkformat.LinkFormatDecoder;
+import de.uzl.itm.ncoap.application.linkformat.LinkAttribute;
+import de.uzl.itm.ncoap.communication.blockwise.BlockSize;
+import de.uzl.itm.ncoap.message.*;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -18,14 +20,6 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
-
-
-import de.uzl.itm.client.R;
-import de.uzl.itm.ncoap.application.client.CoapClient;
-import de.uzl.itm.ncoap.application.client.linkformat.LinkFormatDecoder;
-import de.uzl.itm.ncoap.application.server.webresource.linkformat.LinkAttribute;
-import de.uzl.itm.ncoap.communication.dispatching.client.ClientCallback;
-import de.uzl.itm.ncoap.message.*;
 
 
 /**
@@ -40,6 +34,7 @@ public class ServiceDiscoveryTask extends AsyncTask<Void, Void, Void> {
     private String serverName;
     private int portNumber;
     private boolean confirmable;
+    private BlockSize block2Size;
 
     public ServiceDiscoveryTask(CoapClientActivity activity){
         this.activity = activity;
@@ -61,12 +56,18 @@ public class ServiceDiscoveryTask extends AsyncTask<Void, Void, Void> {
 
         this.confirmable = ((RadioButton) activity.findViewById(R.id.rad_con)).isChecked();
 
+        this.block2Size = this.getBlock2Size();
+
         progressDialog.setMessage(
                 this.activity.getResources().getString(R.string.waiting)
         );
         progressDialog.show();
     }
 
+    private BlockSize getBlock2Size() {
+        long block2Szx= ((Spinner) activity.findViewById(R.id.spn_block2)).getSelectedItemId() - 1;
+        return BlockSize.getBlockSize(block2Szx);
+    }
 
     @Override
     protected Void doInBackground(final Void... nothing) {
@@ -81,24 +82,27 @@ public class ServiceDiscoveryTask extends AsyncTask<Void, Void, Void> {
             InetSocketAddress remoteEndpoint = new InetSocketAddress(InetAddress.getByName(serverName), portNumber);
 
             //Read CON/NON from UI
-            MessageType.Name messageType;
+            int messageType;
             if(this.confirmable){
-                messageType = MessageType.Name.CON;
-            }
-            else{
-                messageType = MessageType.Name.NON;
+                messageType = MessageType.CON;
+            } else {
+                messageType = MessageType.NON;
             }
 
             //Create CoAP request to discover resources
             URI targetURI = new URI("coap", null, serverName, portNumber, "/.well-known/core", null, null);
-            CoapRequest coapRequest = new CoapRequest(messageType, MessageCode.Name.GET, targetURI);
+            CoapRequest coapRequest = new CoapRequest(messageType, MessageCode.GET, targetURI);
 
-            this.coapClient.sendCoapRequest(coapRequest, new ServiceDiscoveryCallback(), remoteEndpoint);
+            //Set block2 option (if any)
+            if(BlockSize.UNBOUND != this.block2Size) {
+                coapRequest.setPreferredBlock2Size(this.block2Size);
+            }
+
+            this.coapClient.sendCoapRequest(coapRequest, remoteEndpoint, new ServiceDiscoveryCallback());
 
             return null;
 
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             this.progressDialog.dismiss();
             showToast(e.getMessage());
             return null;
@@ -125,40 +129,52 @@ public class ServiceDiscoveryTask extends AsyncTask<Void, Void, Void> {
                 public void run() {
                     progressDialog.dismiss();
 
-                    String payload = coapResponse.getContent().toString(CoapMessage.CHARSET);
-                    Map<String, Set<LinkAttribute>> services = LinkFormatDecoder.decode(payload);
+                    try {
+                        String payload = coapResponse.getContent().toString(CoapMessage.CHARSET);
+                        Map<String, Set<LinkAttribute>> services = LinkFormatDecoder.decode(payload);
 
-                    String[] serviceNames = new String[services.keySet().size()];
-                    serviceNames = services.keySet().toArray(serviceNames);
-                    Arrays.sort(serviceNames);
+                        String[] serviceNames = new String[services.keySet().size()];
+                        serviceNames = services.keySet().toArray(serviceNames);
+                        Arrays.sort(serviceNames);
 
-                    showToast("Found " + serviceNames.length + " Services!");
+                        showToast("Found " + serviceNames.length + " Services!");
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
-                            android.R.layout.simple_spinner_dropdown_item, serviceNames);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
+                                android.R.layout.simple_spinner_dropdown_item, serviceNames);
 
-                    AutoCompleteTextView txtService = ((AutoCompleteTextView) activity.findViewById(R.id.txt_service));
-                    txtService.setAdapter(adapter);
-                    txtService.setHint(R.string.service_hint2);
+                        AutoCompleteTextView txtService =
+                                ((AutoCompleteTextView) activity.findViewById(R.id.txt_service));
+                        txtService.setAdapter(adapter);
+                        txtService.setHint(R.string.service_hint2);
 
-
-                    //Set Method Spinner to GET
-                    ((Spinner) activity.findViewById(R.id.spn_methods)).setSelection(1);
-
-
+                        //Set Method Spinner to GET
+                        ((Spinner) activity.findViewById(R.id.spn_methods)).setSelection(1);
+                    } catch (Exception ex) {
+                        showToast("Unexpected ERROR:\n" + ex.getMessage());
+                    }
                 }
             });
         }
 
-
         @Override
-        public void processMiscellaneousError(final String description) {
+        public void processResponseBlockReceived(final long receivedLength, final long expectedLength) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    showToast("ERROR: " + description + "!");
+                    String expected = expectedLength == -1 ? "UNKNOWN" : ("" + expectedLength);
+                    progressDialog.setMessage(receivedLength + " / " + expected);
                 }
             });
+        }
+
+        @Override
+        public void processBlockwiseResponseTransferFailed() {
+            showToast("Blockwise response transfer failed for some unknown reason...");
+        }
+
+        @Override
+        public void processMiscellaneousError(final String description) {
+            showToast("ERROR: " + description + "!");
         }
 
     }

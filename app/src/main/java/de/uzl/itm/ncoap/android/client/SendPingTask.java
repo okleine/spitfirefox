@@ -5,8 +5,8 @@ import android.os.AsyncTask;
 import android.widget.EditText;
 import android.widget.Toast;
 import de.uzl.itm.client.R;
+import de.uzl.itm.ncoap.application.client.ClientCallback;
 import de.uzl.itm.ncoap.application.client.CoapClient;
-import de.uzl.itm.ncoap.communication.dispatching.client.ClientCallback;
 import de.uzl.itm.ncoap.message.CoapResponse;
 
 import java.net.InetAddress;
@@ -65,7 +65,7 @@ public class SendPingTask extends AsyncTask<Void, Void, Void>{
             return null;
         }
 
-        clientApplication.sendCoapPing(new PingCallback(remoteEndpoint), remoteEndpoint);
+        clientApplication.sendCoapPing(remoteEndpoint, new PingCallback(remoteEndpoint));
 
         return null;
     }

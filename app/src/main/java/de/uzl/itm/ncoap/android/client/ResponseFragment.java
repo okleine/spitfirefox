@@ -171,16 +171,17 @@ public class ResponseFragment extends Fragment implements RadioGroup.OnCheckedCh
 
         //Response Type
         TextView txtResponseType = (TextView) getActivity().findViewById(R.id.txt_type_response);
-        MessageType.Name messageType = coapResponse.getMessageTypeName();
-        if(messageType == MessageType.Name.CON) {
-            txtResponseType.setText("CON");
-        } else if(messageType == MessageType.Name.NON) {
-            txtResponseType.setText("NON");
-        } else if(messageType == MessageType.Name.ACK) {
-            txtResponseType.setText("ACK");
-        } else {
-            txtResponse.setText("UNKNOWN");
-        }
+        txtResponseType.setText(coapResponse.getMessageTypeName());
+//        int messageType = coapResponse.getMessageType();
+//        if(messageType == MessageType.CON) {
+//            txtResponseType.setText("CON");
+//        } else if(messageType == MessageType.Name.NON) {
+//            txtResponseType.setText("NON");
+//        } else if(messageType == MessageType.Name.ACK) {
+//            txtResponseType.setText("ACK");
+//        } else {
+//            txtResponse.setText("UNKNOWN");
+//        }
 
         //ETAG Option
         TableRow etagRow = (TableRow) clientActivity.findViewById(R.id.tabrow_etag_response);
@@ -256,7 +257,7 @@ public class ResponseFragment extends Fragment implements RadioGroup.OnCheckedCh
         if(block2Number != UintOptionValue.UNDEFINED){
             clientActivity.findViewById(R.id.tabrow_block2_response).setVisibility(View.VISIBLE);
             ((TextView) clientActivity.findViewById(R.id.txt_block2_response)).setText(
-                    "No: " + block2Number + " | SZX: " + coapResponse.getBlock2EncodedSize()
+                    "No: " + block2Number + " | SZX: " + coapResponse.getBlock2Szx()
             );
         } else {
             clientActivity.findViewById(R.id.tabrow_block2_response).setVisibility(View.GONE);
@@ -285,6 +286,7 @@ public class ResponseFragment extends Fragment implements RadioGroup.OnCheckedCh
         if (checkedId == R.id.rad_stop_observation && getActivity() != null) {
             if(this.clientCallback != null) {
                 this.clientCallback.cancelObservation();
+//                ((RadioButton) group.findViewById(R.id.rad_stop_observation)).setText(R.string.observation_stopped);
             }
         }
     }

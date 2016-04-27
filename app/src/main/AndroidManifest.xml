@@ -13,6 +13,7 @@
         <activity
             android:name="de.uzl.itm.ncoap.android.client.CoapClientActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
         >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

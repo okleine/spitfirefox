@@ -119,7 +119,8 @@
                 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:stretchColumns="2">
+                    android:stretchColumns="2"
+                    >
 
                     <TableRow style="@style/OptionRow">
                         <TextView style="@style/OptionLabel"
@@ -128,7 +129,8 @@
                         <TextView style="@style/OptionLabel"
                             android:text="@string/ifmatch_label"
                         />
-                        <EditText style="@style/OptionValue.Inactive"
+                        <EditText style="@style/OptionValue"
+                            android:hint="@string/ifmatch_hint"
                             android:id="@+id/txt_ifmatch"
                         />
                     </TableRow>
@@ -140,8 +142,10 @@
                         <TextView style="@style/OptionLabel"
                                   android:text="@string/etag_label"
                         />
-                        <EditText style="@style/OptionValue.Inactive"
+                        <EditText style="@style/OptionValue"
                                   android:id="@+id/txt_etag_request"
+                                  android:hint="@string/etag_hint"
+
                         />
                     </TableRow>
 
@@ -152,8 +156,7 @@
                         <TextView style="@style/OptionLabel"
                                   android:text="@string/ifnonematch_label"
                         />
-                        <CheckBox style="OptionValue"
-                            android:id="@+id/chk_ifnonematch"
+                        <CheckBox android:id="@+id/chk_ifnonematch"
                         />
                     </TableRow>
 
@@ -166,10 +169,11 @@
                         />
                         <EditText style="@style/OptionValue"
                                   android:id="@+id/txt_contentformat"
+                                  android:hint="@string/contentformat_hint"
                         />
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow style="@style/OptionRow">
                         <TextView style="@style/OptionLabel"
                                   android:text="@string/accept_no"
                         />
@@ -178,6 +182,37 @@
                         />
                         <EditText style="@style/OptionValue"
                                   android:id="@+id/txt_accept"
+                                  android:hint="@string/accept_hint"
+                        />
+                    </TableRow>
+
+                    <TableRow style="@style/OptionRow">
+                        <TextView style="@style/OptionLabel"
+                                  android:text="@string/block2_no"
+                        />
+
+                        <TextView style="@style/OptionLabel"
+                                  android:text="@string/block2_label"
+                        />
+
+                        <Spinner style="@style/OptionValue"
+                                 android:id="@+id/spn_block2"
+                                 android:entries="@array/blocksizes"
+                        />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView style="@style/OptionLabel"
+                                  android:text="@string/block1_no"
+                        />
+
+                        <TextView style="@style/OptionLabel"
+                                  android:text="@string/block1_label"
+                        />
+
+                        <Spinner style="@style/OptionValue"
+                                 android:id="@+id/spn_block1"
+                                 android:entries="@array/blocksizes"
                         />
                     </TableRow>
                 </TableLayout>
