@@ -1,7 +1,7 @@
 ## SPITFIREFOX - A CoAP Client for Android
 
 SPITFIREFOX is based on [nCoAP](https://github.com/okleine/nCoAP).
-The following exemplarly shows a request to `coap://vs0.inf.ethz.ch/obs` and the response.
+The following screenshots (from a virtual Nexus 5 android device with API 23) exemplarly show a request to `coap://vs0.inf.ethz.ch/obs` and the response.
 
 <img align="left" src="https://media.itm.uni-luebeck.de/people/kleine/spitfirefox-screenshots/request_fragment2.png" width="250"/>
 <img align="right" src="https://media.itm.uni-luebeck.de/people/kleine/spitfirefox-screenshots/response_fragment2.png" width="250"/>
