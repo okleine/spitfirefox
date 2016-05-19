@@ -162,26 +162,17 @@ public class ResponseFragment extends Fragment implements RadioGroup.OnCheckedCh
         this.clientActivity = (CoapClientActivity) activity;
     }
 
-    public void responseReceived(URI serviceURI, CoapResponse coapResponse){
+    public void responseReceived(URI uri, CoapResponse coapResponse){
         TextView txtResponse = (TextView) getActivity().findViewById(R.id.txt_response_payload);
+        txtResponse.setText("");
         txtResponse.setText(coapResponse.getContent().toString(CoapMessage.CHARSET));
 
-        TextView txtServiceURI = (TextView) getActivity().findViewById(R.id.txt_uri);
-        txtServiceURI.setText(serviceURI.toString());
+        TextView txtURI = (TextView) getActivity().findViewById(R.id.txt_uri);
+        txtURI.setText(uri.toString());
 
         //Response Type
         TextView txtResponseType = (TextView) getActivity().findViewById(R.id.txt_type_response);
         txtResponseType.setText(coapResponse.getMessageTypeName());
-//        int messageType = coapResponse.getMessageType();
-//        if(messageType == MessageType.CON) {
-//            txtResponseType.setText("CON");
-//        } else if(messageType == MessageType.Name.NON) {
-//            txtResponseType.setText("NON");
-//        } else if(messageType == MessageType.Name.ACK) {
-//            txtResponseType.setText("ACK");
-//        } else {
-//            txtResponse.setText("UNKNOWN");
-//        }
 
         //ETAG Option
         TableRow etagRow = (TableRow) clientActivity.findViewById(R.id.tabrow_etag_response);

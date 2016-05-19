@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ncoap-android-client.iml" filepath="$PROJECT_DIR$/ncoap-android-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spitfirefox.iml" filepath="$PROJECT_DIR$/spitfirefox.iml" />
     </modules>
   </component>
 </project>

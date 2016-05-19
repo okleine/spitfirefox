@@ -19,9 +19,11 @@ import android.view.inputmethod.InputMethodManager;
 import java.net.URI;
 
 import android.widget.Spinner;
+import android.widget.Toast;
 import de.uzl.itm.client.R;
 import de.uzl.itm.ncoap.application.client.CoapClient;
 import de.uzl.itm.ncoap.message.CoapResponse;
+import de.uzl.itm.ncoap.message.options.UintOptionValue;
 
 
 public class CoapClientActivity extends AppCompatActivity implements RequestFragment.SendRequestButtonClickedListener {
@@ -136,15 +138,15 @@ public class CoapClientActivity extends AppCompatActivity implements RequestFrag
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                long blockNo = coapResponse.getBlock2Number();
-//                String text = "Response received";
-//                if (blockNo != UintOptionValue.UNDEFINED) {
-//                    text += " (" + blockNo + " blocks in " + duration + " ms)";
-//                } else {
-//                    text += " (after " + duration + " ms)";
-//                }
-//
-//                Toast.makeText(CoapClientActivity.this, text, Toast.LENGTH_LONG).show();
+                long block2Num = coapResponse.getBlock2Number();
+                String text = "Response received";
+                if (block2Num != UintOptionValue.UNDEFINED) {
+                    text += " (" + block2Num + " blocks in " + duration + " ms)";
+                } else {
+                    text += " (after " + duration + " ms)";
+                }
+
+                Toast.makeText(CoapClientActivity.this, text, Toast.LENGTH_LONG).show();
 
                 viewPager.setCurrentItem(1);
                 CoapClientActivity.this.responseFragment.responseReceived(serviceURI, coapResponse);

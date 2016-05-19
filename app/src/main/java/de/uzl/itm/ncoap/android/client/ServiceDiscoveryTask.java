@@ -9,17 +9,14 @@ import android.widget.*;
 import de.uzl.itm.client.R;
 import de.uzl.itm.ncoap.application.client.ClientCallback;
 import de.uzl.itm.ncoap.application.client.CoapClient;
-import de.uzl.itm.ncoap.application.client.linkformat.LinkFormatDecoder;
-import de.uzl.itm.ncoap.application.linkformat.LinkAttribute;
+import de.uzl.itm.ncoap.application.linkformat.LinkValueList;
 import de.uzl.itm.ncoap.communication.blockwise.BlockSize;
 import de.uzl.itm.ncoap.message.*;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -131,16 +128,22 @@ public class ServiceDiscoveryTask extends AsyncTask<Void, Void, Void> {
 
                     try {
                         String payload = coapResponse.getContent().toString(CoapMessage.CHARSET);
-                        Map<String, Set<LinkAttribute>> services = LinkFormatDecoder.decode(payload);
+                        LinkValueList linkValueList = LinkValueList.decode(payload);
 
-                        String[] serviceNames = new String[services.keySet().size()];
-                        serviceNames = services.keySet().toArray(serviceNames);
-                        Arrays.sort(serviceNames);
+                        String[] uriReferences = new String[linkValueList.getUriReferences().size()];
+                        uriReferences = linkValueList.getUriReferences().toArray(uriReferences);
+                        Arrays.sort(uriReferences);
 
-                        showToast("Found " + serviceNames.length + " Services!");
+                        showToast("Found " + uriReferences.length + " Resources!");
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
-                                android.R.layout.simple_spinner_dropdown_item, serviceNames);
+//                        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
+//                                android.R.layout.simple_spinner_dropdown_item, uriReferences);
+
+                        ArrayAdapter adapter = new ArrayAdapter(activity, R.layout.spinner_item, uriReferences);
+
+//                        adapter.setDropDownViewResource(R.layout.spinner_item);
+//                        ((Spinner) activity.findViewById(R.id.txt_service)).setAdapter(adapter);
+//                        ((Spinner) view.findViewById(R.id.spn_block1)).setAdapter(adapter);
 
                         AutoCompleteTextView txtService =
                                 ((AutoCompleteTextView) activity.findViewById(R.id.txt_service));

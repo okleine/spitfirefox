@@ -134,17 +134,6 @@ public class SendRequestTask extends AsyncTask<Long, Void, SendRequestTask.Spitf
             //Create URI from server name, port and service path (and query)
             URI serviceURI = new URI("coap", null, serverName, remoteEndpoint.getPort(), localUri, null, null);
 
-            //Define method to be set in request
-//            int messageCode;
-//            if(method[0] == 1) {
-//                messageCode = MessageCode.GET;
-//            } else if(method[0] == 2) {
-//                messageCode = MessageCode.POST;
-//            } else if(method[0] == 3) {
-//                messageCode = MessageCode.PUT;
-//            } else if(method[0] == 4) {
-//                messageCode = MessageCode.Name.DELETE;
-//            }
 
             //Create initial CoAP request
             CoapRequest coapRequest = new CoapRequest(messageType, method[0].intValue(), serviceURI);
@@ -300,7 +289,7 @@ public class SendRequestTask extends AsyncTask<Long, Void, SendRequestTask.Spitf
         }
 
         @Override
-        public boolean continueObservation(){
+        public boolean continueObservation() {
             return !this.observationCancelled;
         }
     }
