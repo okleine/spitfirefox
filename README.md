@@ -4,10 +4,10 @@ SPITFIREFOX is based on [nCoAP](https://github.com/okleine/nCoAP).
 
 ### Screenshots
 
-The following screenshots exmplarly show a request to coap://vs0.inf.ethz.ch/obs and the response.
+The following screenshots exemplarly show a request to coap://vs0.inf.ethz.ch/obs and the response.
 
-Request Fragment | Response Fragment
------------------|------------------
-<img src="https://media.itm.uni-luebeck.de/people/kleine/spitfirefox-screenshots/request_fragment.png" width="250" /> | <img src="https://media.itm.uni-luebeck.de/people/kleine/spitfirefox-screenshots/response_fragment.png" width="250"/>
+<img align="left" src="https://media.itm.uni-luebeck.de/people/kleine/spitfirefox-screenshots/request_fragment.png" width="250"/>
+<img align="right" src="https://media.itm.uni-luebeck.de/people/kleine/spitfirefox-screenshots/response_fragment.png" width="250"/>
+The **Request Fragment** on the left is to define a request incl. the target URI, the method and all options. The additional method *Discover* is to request the `/.well-known/core` resource of the given server and thus enable auto-completion for URI paths. 
 
-To save space, only options that were present in an incoming response are displayed in the response fragment. 
+The **Response Fragment** on the right is to display the response of the server. To save space, only options that were present in an incoming response are displayed in the response fragment.
