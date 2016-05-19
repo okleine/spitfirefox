@@ -4,7 +4,7 @@ SPITFIREFOX is based on [nCoAP](https://github.com/okleine/nCoAP).
 
 ### Screenshots
 
-The following screenshots exmplarly show a request to observe coap://vs0.inf.ethz.ch/obs and the (first) response.
+The following screenshots exmplarly show a request to coap://vs0.inf.ethz.ch/obs and the response.
 
 Request Fragment | Response Fragment
 -----------------|------------------
