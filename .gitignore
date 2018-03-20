@@ -6,6 +6,7 @@
 .idea/tasks.xml
 .idea/dictionaries
 local.properties
+spitfirefox.iml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
